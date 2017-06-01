@@ -2,7 +2,8 @@
 * @file
 * @brief This file contains implementation of cpu side for phong shading.
 *
-* @author TomĂˇĹˇ Milet, imilet@fit.vutbr.cz
+* @author Tomáš Milet, imilet@fit.vutbr.cz
+* @author Petr Šopf
 *
 */
 

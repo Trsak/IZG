@@ -1,8 +1,9 @@
 /*!
- * @file 
+ * @file
  * @brief This file contains implemenation of phong vertex and fragment shader.
  *
  * @author Tomáš Milet, imilet@fit.vutbr.cz
+ * @author Petr Šopf
  */
 
 #include<math.h>
@@ -24,15 +25,15 @@ void phong_vertexShader(
 		gpu);
 
 	UniformLocation const viewMatrixLocation = getUniformLocation(
-		gpu, 
+		gpu,
 		"viewMatrix");
 
 	Mat4 const*const view = shader_interpretUniformAsMat4(
-		uniformsHandle, 
+		uniformsHandle,
 		viewMatrixLocation);
 
 	UniformLocation const projectionMatrixLocation = getUniformLocation(
-		gpu, 
+		gpu,
 		"projectionMatrix");
 
 	Mat4 const*const proj = shader_interpretUniformAsMat4(

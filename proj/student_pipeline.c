@@ -1,8 +1,9 @@
 /*!
- * @file 
+ * @file
  * @brief This file contains implementation of rendering pipeline.
  *
  * @author Tomáš Milet, imilet@fit.vutbr.cz
+ * @author Petr Šopf
  *
  */
 
@@ -88,7 +89,7 @@ void gpu_runPrimitiveAssembly(
 
 /**
  * @brief This function does clipping of an edge by frustum plane.
- * 
+ *
  * A point P(t) on the edge is: P(t) = vertexA + t*(vertexB - vertexA), t in [0,1].
  * This function returns interval of possible values of parameter t for which P(t) is in front of frustum plane.
  * The interval is returned in arguments: minT and maxT.
@@ -425,7 +426,7 @@ void gpu_runFrustumPlaneClippingOnTriangle(
   // A axis refers to frustum planes:
   // x axis - LEFT  , RIGHT
   // y axis - BOTTOM, TOP
-  // z axis - NEAR  , FAR  
+  // z axis - NEAR  , FAR
   //
   // A part of comparison refers to frustum planes:
   // -Pw <= +Pi - LEFT , BOTTOM, NEAR
@@ -458,7 +459,7 @@ void gpu_runFrustumPlaneClippingOnTriangle(
         positive);
   }
 
-  // Binary mask of visible vertices 
+  // Binary mask of visible vertices
   uint32_t visible = 0u;
   for(size_t i=0;i<VERTICES_PER_TRIANGLE;++i)visible |= ((uint32_t)(tMin[i] == 0.f && tMin[i] <= tMax[i]))<<i;
 
@@ -548,9 +549,9 @@ void gpu_runViewportTransformation(
     size_t             const height   ){
   assert(primitive != NULL);
   for(size_t v=0;v<primitive->nofUsedVertices;++v){
-    primitive->vertices[v].gl_Position.data[0] = 
+    primitive->vertices[v].gl_Position.data[0] =
         (primitive->vertices[v].gl_Position.data[0]*.5f+.5f)*(float)width;
-    primitive->vertices[v].gl_Position.data[1] = 
+    primitive->vertices[v].gl_Position.data[1] =
         (primitive->vertices[v].gl_Position.data[1]*.5f+.5f)*(float)height;
   }
 }
@@ -692,7 +693,7 @@ void gpu_createFragment(
     size_t const nofComponents = (size_t)primitive->types[attribute];
     if   (primitive->interpolations[attribute] == FLAT){
       for(size_t component=0;component<nofComponents;++component)
-        ((float*)fragment->attributes.attributes[attribute])[component] = 
+        ((float*)fragment->attributes.attributes[attribute])[component] =
           ((float*)primitive->vertices[0].attributes[attribute])[component];
     }else if(primitive->interpolations[attribute] == NOPERSPECTIVE){
       for(size_t component=0;component<nofComponents;++component){
@@ -826,7 +827,7 @@ void gpu_createSubPrimitive(
         primitive->vertices[1].gl_Position.data[componentIndex],
         primitive->vertices[2].gl_Position.data[componentIndex]
       };
-      subPrimitive->vertices[vertexIndex].gl_Position.data[componentIndex] = 
+      subPrimitive->vertices[vertexIndex].gl_Position.data[componentIndex] =
         gpu_noperspectiveInterpolate(values,clippedTriangle->coords[vertexIndex].data);
     }
 
@@ -840,7 +841,7 @@ void gpu_createSubPrimitive(
           ((float*)primitive->vertices[1].attributes[attributeIndex])[componentIndex],
           ((float*)primitive->vertices[2].attributes[attributeIndex])[componentIndex]
         };
-        ((float*)subPrimitive->vertices[vertexIndex].attributes[attributeIndex])[componentIndex] = 
+        ((float*)subPrimitive->vertices[vertexIndex].attributes[attributeIndex])[componentIndex] =
           gpu_noperspectiveInterpolate(values,clippedTriangle->coords[vertexIndex].data);
       }
     }
@@ -906,5 +907,3 @@ void cpu_drawTriangles(
     }
   }
 }
-
-
